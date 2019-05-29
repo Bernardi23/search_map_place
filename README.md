@@ -85,3 +85,11 @@ return SearchMapPlaceWidget(
     },
 );
 ```
+
+## Future Implementations
+
+There are a lot of features that can be added to this package. Here are some features I want to implement (or could be implemented by someone else):
+
+- Make the widget more personalized
+- Make documentation to use the created API and Classes from the package, without having to use the widget itself. 
+- Make this package independent of `google_maps_flutter`

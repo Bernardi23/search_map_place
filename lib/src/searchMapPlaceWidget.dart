@@ -44,7 +44,8 @@ class SearchMapPlaceWidget extends StatefulWidget {
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
 }
 
-class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with SingleTickerProviderStateMixin {
+class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
+    with SingleTickerProviderStateMixin {
   TextEditingController _textEditingController = TextEditingController();
   AnimationController _animationController;
   // SearchContainer height.
@@ -84,7 +85,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
   Widget build(BuildContext context) => Container(
         width: MediaQuery.of(context).size.width * 0.9,
         child: _searchContainer(
-          child: SearchMapPlaceWidget(context),
+          child: _searchInput(context),
         ),
       );
 
@@ -111,7 +112,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
                     children: <Widget>[
                       if (_placePredictions.length > 0)
                         for (var prediction in _placePredictions)
-                          placeOption(Place.fromJSON(prediction, geocode)),
+                          _placeOption(Place.fromJSON(prediction, geocode)),
                     ],
                   ),
                 ),
@@ -121,7 +122,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
         });
   }
 
-  Widget SearchMapPlaceWidget(BuildContext context) {
+  Widget _searchInput(BuildContext context) {
     return Center(
       child: Row(
         children: <Widget>[
@@ -143,7 +144,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
     );
   }
 
-  Widget placeOption(Place prediction) {
+  Widget _placeOption(Place prediction) {
     String place = prediction.description;
 
     return MaterialButton(
@@ -229,4 +230,3 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
     widget.onSelected(prediction);
   }
 }
-
