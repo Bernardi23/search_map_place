@@ -10,4 +10,3 @@ part 'src/geocoding.dart';
 part 'src/geolocation.dart';
 part 'src/place.dart';
 part 'src/searchMapPlaceWidget.dart';
-

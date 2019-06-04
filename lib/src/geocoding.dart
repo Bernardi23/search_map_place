@@ -11,6 +11,6 @@ class Geocoding {
         "https://maps.googleapis.com/maps/api/geocode/json?address=$trimmedAdress&key=$apiKey&language=$language";
     final response = await http.get(url);
     final json = JSON.jsonDecode(response.body);
-    return  Geolocation.fromJSON(json);
+    return Geolocation.fromJSON(json);
   }
 }

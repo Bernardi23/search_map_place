@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:search_map_place/search_map_place.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+String apiKEY;
 
 void main() => runApp(MyApp());
 

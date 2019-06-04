@@ -93,3 +93,7 @@ There are a lot of features that can be added to this package. Here are some fea
 - Make the widget more personalized
 - Make documentation to use the created API and Classes from the package, without having to use the widget itself. 
 - Make this package independent of `google_maps_flutter`
+
+## Possible issues
+
+This might not be perfectly responsive to the device's size. If you find any issues related to this, or anything else, please report.

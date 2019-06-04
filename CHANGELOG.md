@@ -7,3 +7,7 @@
 ## [0.1.0+1] - May 29th, 2019
 
 Fixed naming of a method.
+
+## [0.1.0+1] - June 3rd, 2019
+
+Added suggested actions from Pub

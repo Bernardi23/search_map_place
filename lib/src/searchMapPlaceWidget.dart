@@ -9,7 +9,8 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.location,
     this.radius,
     this.strictBounds = false,
-  }) : assert((location == null && radius == null) || (location != null && radius != null));
+  }) : assert((location == null && radius == null) ||
+            (location != null && radius != null));
 
   /// API Key of the Google Maps API.
   final String apiKey;
@@ -62,7 +63,8 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
     _selectedPlace = null;
     _placePredictions = [];
     geocode = Geocoding(apiKey: widget.apiKey, language: widget.language);
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _containerHeight = Tween<double>(begin: 55, end: 360).animate(
       CurvedAnimation(
         curve: Interval(0.0, 0.5, curve: Curves.easeInOut),
@@ -130,14 +132,16 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
             child: TextField(
               decoration: _inputStyle(),
               controller: _textEditingController,
-              style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
+              style:
+                  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
               onChanged: (value) => setState(() => _autocompletePlace(value)),
             ),
           ),
           Container(width: 15),
           GestureDetector(
             child: Icon(Icons.search, color: Colors.blue),
-            onTap: () => widget.onSearch(Place.fromJSON(_selectedPlace, geocode)),
+            onTap: () =>
+                widget.onSearch(Place.fromJSON(_selectedPlace, geocode)),
           )
         ],
       ),
@@ -152,7 +156,9 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
       onPressed: () => _selectPlace(prediction),
       child: ListTile(
         title: Text(
-          place.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
+          place.length < 45
+              ? "$place"
+              : "${place.replaceRange(45, place.length, "")} ...",
           style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
           maxLines: 1,
         ),
@@ -177,7 +183,9 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
     return BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
-      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)
+      ],
     );
   }
 

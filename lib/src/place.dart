@@ -41,7 +41,7 @@ class Place {
   List<dynamic> types;
 
   /// Has the full JSON response received from the Places API. Can be used to extract extra information. More info on the [Places Autocomplete API documentation](https://developers.google.com/places/web-service/autocomplete)
-  /// 
+  ///
   /// All of its information can be accessed like a regular [Map]. For example:
   /// ```
   /// fullJSON["structured_formating"]["main_text"]

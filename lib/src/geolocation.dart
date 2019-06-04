@@ -40,8 +40,10 @@ class Geolocation {
   get bounds {
     try {
       return LatLngBounds(
-        southwest: LatLng(_bounds["southwest"]["lat"], _bounds["southwest"]["lng"]),
-        northeast: LatLng(_bounds["northeast"]["lat"], _bounds["northeast"]["lng"]),
+        southwest:
+            LatLng(_bounds["southwest"]["lat"], _bounds["southwest"]["lng"]),
+        northeast:
+            LatLng(_bounds["northeast"]["lat"], _bounds["northeast"]["lng"]),
       );
     } catch (e) {
       print(
