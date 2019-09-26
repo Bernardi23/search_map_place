@@ -3,6 +3,7 @@ part of search_map_place;
 class SearchMapPlaceWidget extends StatefulWidget {
   SearchMapPlaceWidget({
     @required this.apiKey,
+    this.placeholder = 'Search',
     this.onSelected,
     this.onSearch,
     this.language = 'en',
@@ -14,6 +15,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// API Key of the Google Maps API.
   final String apiKey;
+
+  /// Placeholder text to show when the user has not entered any input.
+  final String placeholder;
 
   /// The callback that is called when one Place is selected by the user.
   final void Function(Place place) onSelected;
@@ -173,7 +177,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   // Styling
   InputDecoration _inputStyle() {
     return InputDecoration(
-      hintText: "Search",
+      hintText: this.widget.placeholder,
       border: InputBorder.none,
       contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
     );
