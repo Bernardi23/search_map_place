@@ -4,6 +4,8 @@ class SearchMapPlaceWidget extends StatefulWidget {
   SearchMapPlaceWidget({
     @required this.apiKey,
     this.placeholder = 'Search',
+    this.icon = Icons.search,
+    this.iconColor = Colors.blue,
     this.onSelected,
     this.onSearch,
     this.language = 'en',
@@ -44,6 +46,13 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// Returns only those places that are strictly within the region defined by location and radius. This is a restriction, rather than a bias, meaning that results outside this region will not be returned even if they match the user input.
   final bool strictBounds;
+
+  /// The icon to show in the search box
+  final IconData icon;
+
+  /// The color of the icon to show in the search box
+  final Color iconColor;
+
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -143,7 +152,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
           ),
           Container(width: 15),
           GestureDetector(
-            child: Icon(Icons.search, color: Colors.blue),
+            child: Icon(this.widget.icon, color: this.widget.iconColor),
             onTap: () =>
                 widget.onSearch(Place.fromJSON(_selectedPlace, geocode)),
           )
