@@ -3,6 +3,9 @@ part of search_map_place;
 class SearchMapPlaceWidget extends StatefulWidget {
   SearchMapPlaceWidget({
     @required this.apiKey,
+    this.placeholder = 'Search',
+    this.icon = Icons.search,
+    this.iconColor = Colors.blue,
     this.onSelected,
     this.onSearch,
     this.language = 'en',
@@ -14,6 +17,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// API Key of the Google Maps API.
   final String apiKey;
+
+  /// Placeholder text to show when the user has not entered any input.
+  final String placeholder;
 
   /// The callback that is called when one Place is selected by the user.
   final void Function(Place place) onSelected;
@@ -40,6 +46,13 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// Returns only those places that are strictly within the region defined by location and radius. This is a restriction, rather than a bias, meaning that results outside this region will not be returned even if they match the user input.
   final bool strictBounds;
+
+  /// The icon to show in the search box
+  final IconData icon;
+
+  /// The color of the icon to show in the search box
+  final Color iconColor;
+
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -139,7 +152,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
           ),
           Container(width: 15),
           GestureDetector(
-            child: Icon(Icons.search, color: Colors.blue),
+            child: Icon(this.widget.icon, color: this.widget.iconColor),
             onTap: () =>
                 widget.onSearch(Place.fromJSON(_selectedPlace, geocode)),
           )
@@ -173,7 +186,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   // Styling
   InputDecoration _inputStyle() {
     return InputDecoration(
-      hintText: "Search",
+      hintText: this.widget.placeholder,
       border: InputBorder.none,
       contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
     );
