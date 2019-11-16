@@ -16,7 +16,12 @@ dependencies:
     search_map_place: <latest>
 ```
 
-After that, import it to your file:
+After that, make sure you have the following APIs activated in your Google Cloud Platform:
+- Places
+- Geolocation
+- Geocoding
+
+You can now import it to your file and use it on your app.
 
 ```dart
 import 'package:search_map_place/search_map_place.dart';
@@ -90,10 +95,6 @@ return SearchMapPlaceWidget(
 
 There are a lot of features that can be added to this package. Here are some features I want to implement (or could be implemented by someone else):
 
-- Make the widget more personalized
-- Make documentation to use the created API and Classes from the package, without having to use the widget itself. 
-- Make this package independent of `google_maps_flutter`
-
-## Possible issues
-
-This might not be perfectly responsive to the device's size. If you find any issues related to this, or anything else, please report.
+- [] Make the widget more personalized
+- [] Make documentation to use the created API and Classes from the package, without having to use the widget itself. 
+- [] Make this package independent of `google_maps_flutter`

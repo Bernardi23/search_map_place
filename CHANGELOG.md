@@ -8,6 +8,10 @@
 
 Fixed naming of a method.
 
-## [0.1.0+1] - June 3rd, 2019
+## [0.1.0+2] - June 3rd, 2019
 
 Added suggested actions from Pub
+
+## [0.1.1] - November 16th, 2019
+
+API error handling, widget is now a little more customizable (color and icon), added Google Cloud Platform instructions in documentation.

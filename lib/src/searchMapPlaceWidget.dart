@@ -12,8 +12,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.location,
     this.radius,
     this.strictBounds = false,
-  }) : assert((location == null && radius == null) ||
-            (location != null && radius != null));
+  }) : assert((location == null && radius == null) || (location != null && radius != null));
 
   /// API Key of the Google Maps API.
   final String apiKey;
@@ -53,13 +52,11 @@ class SearchMapPlaceWidget extends StatefulWidget {
   /// The color of the icon to show in the search box
   final Color iconColor;
 
-
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
 }
 
-class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
-    with SingleTickerProviderStateMixin {
+class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with SingleTickerProviderStateMixin {
   TextEditingController _textEditingController = TextEditingController();
   AnimationController _animationController;
   // SearchContainer height.
@@ -76,8 +73,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
     _selectedPlace = null;
     _placePredictions = [];
     geocode = Geocoding(apiKey: widget.apiKey, language: widget.language);
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _containerHeight = Tween<double>(begin: 55, end: 360).animate(
       CurvedAnimation(
         curve: Interval(0.0, 0.5, curve: Curves.easeInOut),
@@ -145,16 +141,14 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
             child: TextField(
               decoration: _inputStyle(),
               controller: _textEditingController,
-              style:
-                  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
+              style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
               onChanged: (value) => setState(() => _autocompletePlace(value)),
             ),
           ),
           Container(width: 15),
           GestureDetector(
             child: Icon(this.widget.icon, color: this.widget.iconColor),
-            onTap: () =>
-                widget.onSearch(Place.fromJSON(_selectedPlace, geocode)),
+            onTap: () => widget.onSearch(Place.fromJSON(_selectedPlace, geocode)),
           )
         ],
       ),
@@ -169,9 +163,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
       onPressed: () => _selectPlace(prediction),
       child: ListTile(
         title: Text(
-          place.length < 45
-              ? "$place"
-              : "${place.replaceRange(45, place.length, "")} ...",
+          place.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
           style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
           maxLines: 1,
         ),
@@ -196,9 +188,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
     return BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
-      boxShadow: [
-        BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)
-      ],
+      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
     );
   }
 
@@ -211,18 +201,25 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
       String url =
           "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
       if (widget.location != null && widget.radius != null) {
-        url +=
-            "&location=${widget.location.latitude},${widget.location.longitude}&radius=${widget.radius}";
+        url += "&location=${widget.location.latitude},${widget.location.longitude}&radius=${widget.radius}";
         if (widget.strictBounds) {
           url += "&strictbounds";
         }
       }
       final response = await http.get(url);
       final json = JSON.jsonDecode(response.body);
-      final predictions = json["predictions"];
-      await _animationController.animateTo(0.5);
-      setState(() => _placePredictions = predictions);
-      await _animationController.forward();
+
+      if (json["error_message"] != null) {
+        var error = json["error_message"];
+        if (error == "This API project is not authorized to use this API.")
+          error += " Make sure the Places API is activated on your Google Cloud Platform";
+        throw Exception(error);
+      } else {
+        final predictions = json["predictions"];
+        await _animationController.animateTo(0.5);
+        setState(() => _placePredictions = predictions);
+        await _animationController.forward();
+      }
     } else {
       await _animationController.animateTo(0.5);
       setState(() => _placePredictions = []);
