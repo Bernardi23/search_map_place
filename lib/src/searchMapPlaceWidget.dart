@@ -67,6 +67,8 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
   List<dynamic> _placePredictions = [];
   Place _selectedPlace;
   Geocoding geocode;
+  
+  bool proccess = false;
 
   @override
   void initState() {
@@ -197,7 +199,10 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
     /// Will be called everytime the input changes. Making callbacks to the Places
     /// Api and giving the user Place options
 
-    if (input.length > 0) {
+    if (input.length > 0 && proccess != true) {
+      setState(() {
+        proccess = true;
+      });
       String url =
           "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
       if (widget.location != null && widget.radius != null) {
@@ -210,17 +215,26 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
       final json = JSON.jsonDecode(response.body);
 
       if (json["error_message"] != null) {
+        setState(() {
+          proccess = false;
+        });
         var error = json["error_message"];
         if (error == "This API project is not authorized to use this API.")
           error += " Make sure the Places API is activated on your Google Cloud Platform";
         throw Exception(error);
       } else {
+        setState(() {
+          proccess = false;
+        });
         final predictions = json["predictions"];
         await _animationController.animateTo(0.5);
         setState(() => _placePredictions = predictions);
         await _animationController.forward();
       }
     } else {
+        setState(() {
+          proccess = false;
+        });
       await _animationController.animateTo(0.5);
       setState(() => _placePredictions = []);
       await _animationController.reverse();
