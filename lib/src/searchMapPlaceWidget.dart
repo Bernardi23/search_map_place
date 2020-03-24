@@ -112,11 +112,10 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
             alignment: Alignment.center,
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                Expanded(
                   child: child,
                 ),
-                SizedBox(height: 10),
+               
                 Opacity(
                   opacity: _listOpacity.value,
                   child: Column(
