@@ -12,6 +12,8 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.location,
     this.radius,
     this.strictBounds = false,
+    this.containerHeightBegin = 55,
+    this.containerHeightEnd = 360
   }) : assert((location == null && radius == null) || (location != null && radius != null));
 
   /// API Key of the Google Maps API.
@@ -52,6 +54,10 @@ class SearchMapPlaceWidget extends StatefulWidget {
   /// The color of the icon to show in the search box
   final Color iconColor;
 
+  /// Custom container
+  double containerHeightBegin;
+  double containerHeightEnd;
+
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
 }
@@ -74,7 +80,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
     _placePredictions = [];
     geocode = Geocoding(apiKey: widget.apiKey, language: widget.language);
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _containerHeight = Tween<double>(begin: 55, end: 360).animate(
+    _containerHeight = Tween<double>(begin: this.widget.containerHeightBegin , end: this.widget.containerHeightEnd).animate(
       CurvedAnimation(
         curve: Interval(0.0, 0.5, curve: Curves.easeInOut),
         parent: _animationController,
