@@ -12,7 +12,13 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.location,
     this.radius,
     this.strictBounds = false,
-  }) : assert((location == null && radius == null) || (location != null && radius != null));
+    this.placeTypes = const [],
+    this.darkMode = false,
+    this.key,
+  })  : assert((location == null && radius == null) || (location != null && radius != null)),
+        super(key: key);
+
+  final Key key;
 
   /// API Key of the Google Maps API.
   final String apiKey;
@@ -46,11 +52,17 @@ class SearchMapPlaceWidget extends StatefulWidget {
   /// Returns only those places that are strictly within the region defined by location and radius. This is a restriction, rather than a bias, meaning that results outside this region will not be returned even if they match the user input.
   final bool strictBounds;
 
+  /// List of `places` to filter the search. This is a tool that can be used if you only want to search for specific types of locations. For more info on location types, check https://developers.google.com/places/web-service/autocomplete?#place_types
+  final List<String> placeTypes;
+
   /// The icon to show in the search box
   final IconData icon;
 
   /// The color of the icon to show in the search box
   final Color iconColor;
+
+  /// Enables Dark Mode when set to `true`. Default value is `false`.
+  final bool darkMode;
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -68,13 +80,16 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
   Place _selectedPlace;
   Geocoding geocode;
 
+  String _tempInput = "";
+  String _currentInput = "";
+
   @override
   void initState() {
     _selectedPlace = null;
     _placePredictions = [];
     geocode = Geocoding(apiKey: widget.apiKey, language: widget.language);
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _containerHeight = Tween<double>(begin: 55, end: 360).animate(
+    _containerHeight = Tween<double>(begin: 55, end: 364).animate(
       CurvedAnimation(
         curve: Interval(0.0, 0.5, curve: Curves.easeInOut),
         parent: _animationController,
@@ -89,6 +104,10 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
         parent: _animationController,
       ),
     );
+
+    _textEditingController.addListener(_autocompletePlace);
+    customListener();
+
     super.initState();
   }
 
@@ -100,7 +119,9 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
         ),
       );
 
-  // Widgets
+  /*
+  WIDGETS
+  */
   Widget _searchContainer({Widget child}) {
     return AnimatedBuilder(
         animation: _animationController,
@@ -108,25 +129,23 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
           return Container(
             height: _containerHeight.value,
             decoration: _containerDecoration(),
-            padding: EdgeInsets.only(left: 0, right: 0, top: 15),
-            alignment: Alignment.center,
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 4),
                   child: child,
                 ),
-                SizedBox(height: 10),
-                Opacity(
-                  opacity: _listOpacity.value,
-                  child: Column(
-                    children: <Widget>[
-                      if (_placePredictions.length > 0)
-                        for (var prediction in _placePredictions)
-                          _placeOption(Place.fromJSON(prediction, geocode)),
-                    ],
+                if (_placePredictions.length > 0)
+                  Opacity(
+                    opacity: _listOpacity.value,
+                    child: Column(
+                      children: <Widget>[
+                        if (_placePredictions.length > 0)
+                          for (var prediction in _placePredictions)
+                            _placeOption(Place.fromJSON(prediction, geocode)),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           );
@@ -141,8 +160,10 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
             child: TextField(
               decoration: _inputStyle(),
               controller: _textEditingController,
-              style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
-              onChanged: (value) => setState(() => _autocompletePlace(value)),
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.04,
+                color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
+              ),
             ),
           ),
           Container(width: 15),
@@ -159,12 +180,15 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
     String place = prediction.description;
 
     return MaterialButton(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
       onPressed: () => _selectPlace(prediction),
       child: ListTile(
         title: Text(
           place.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
-          style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width * 0.04,
+            color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
+          ),
           maxLines: 1,
         ),
         contentPadding: EdgeInsets.symmetric(
@@ -175,61 +199,93 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
     );
   }
 
-  // Styling
+  /*
+  STYLING
+  */
   InputDecoration _inputStyle() {
     return InputDecoration(
       hintText: this.widget.placeholder,
       border: InputBorder.none,
       contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+      hintStyle: TextStyle(
+        color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
+      ),
     );
   }
 
   BoxDecoration _containerDecoration() {
     return BoxDecoration(
-      color: Colors.white,
+      color: widget.darkMode ? Colors.grey[800] : Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
       boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
     );
   }
 
-  // Methods
-  void _autocompletePlace(String input) async {
-    /// Will be called everytime the input changes. Making callbacks to the Places
-    /// Api and giving the user Place options
+  /*
+  METHODS
+  */
 
-    if (input.length > 0) {
-      String url =
-          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
-      if (widget.location != null && widget.radius != null) {
-        url += "&location=${widget.location.latitude},${widget.location.longitude}&radius=${widget.radius}";
-        if (widget.strictBounds) {
-          url += "&strictbounds";
+  /// Will be called everytime the input changes. Making callbacks to the Places
+  /// Api and giving the user Place options
+  void _autocompletePlace() async {
+    setState(() => _currentInput = _textEditingController.text);
+
+    _textEditingController.removeListener(_autocompletePlace);
+
+    if (_currentInput.length == 0) {
+      _closeSearch();
+      _textEditingController.addListener(_autocompletePlace);
+      return;
+    }
+
+    if (_currentInput == _tempInput) {
+      final predictions = await _makeRequest(_currentInput);
+      await _animationController.animateTo(0.5);
+      setState(() => _placePredictions = predictions);
+      await _animationController.forward();
+      _textEditingController.addListener(_autocompletePlace);
+      return;
+    }
+
+    Future.delayed(Duration(milliseconds: 500), () {
+      _textEditingController.addListener(_autocompletePlace);
+      _autocompletePlace();
+    });
+  }
+
+  /// API request function. Returns the Predictions
+  Future<dynamic> _makeRequest(input) async {
+    String url =
+        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
+    if (widget.location != null && widget.radius != null) {
+      url += "&location=${widget.location.latitude},${widget.location.longitude}&radius=${widget.radius}";
+      if (widget.strictBounds) {
+        url += "&strictbounds";
+      }
+      if (widget.placeTypes.length > 0) {
+        url += "&types=";
+        for (var place in widget.placeTypes) {
+          url += "$place";
         }
       }
-      final response = await http.get(url);
-      final json = JSON.jsonDecode(response.body);
+    }
 
-      if (json["error_message"] != null) {
-        var error = json["error_message"];
-        if (error == "This API project is not authorized to use this API.")
-          error += " Make sure the Places API is activated on your Google Cloud Platform";
-        throw Exception(error);
-      } else {
-        final predictions = json["predictions"];
-        await _animationController.animateTo(0.5);
-        setState(() => _placePredictions = predictions);
-        await _animationController.forward();
-      }
+    final response = await http.get(url);
+    final json = JSON.jsonDecode(response.body);
+
+    if (json["error_message"] != null) {
+      var error = json["error_message"];
+      if (error == "This API project is not authorized to use this API.")
+        error += " Make sure the Places API is activated on your Google Cloud Platform";
+      throw Exception(error);
     } else {
-      await _animationController.animateTo(0.5);
-      setState(() => _placePredictions = []);
-      await _animationController.reverse();
+      final predictions = json["predictions"];
+      return predictions;
     }
   }
 
+  /// Will be called when a user selects one of the Place options
   void _selectPlace(Place prediction) async {
-    /// Will be called when a user selects one of the Place options.
-
     // Sets TextField value to be the location selected
     _textEditingController.value = TextEditingValue(
       text: prediction.description,
@@ -246,5 +302,27 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
 
     // Calls the `onSelected` callback
     widget.onSelected(prediction);
+  }
+
+  /// Closes the expanded search box with predictions
+  void _closeSearch() async {
+    await _animationController.animateTo(0.5);
+    setState(() => _placePredictions = []);
+    _animationController.reverse();
+  }
+
+  /// Will listen for input changes every 0.5 seconds, allowing us to make API requests only when the user stops typing.
+  void customListener() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() => _tempInput = _textEditingController.text);
+      customListener();
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _textEditingController.dispose();
+    super.dispose();
   }
 }

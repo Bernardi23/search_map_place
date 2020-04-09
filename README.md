@@ -43,7 +43,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-The constructor has 7 attributes:
+The constructor has 7 attributes related to the API:
 - `String apiKey` is the only required attribute. It is the Google Maps API Key your application is using
 - `(Place) void onSelected` is a callback function called when the user selects one of the autocomplete options. 
 - `(Place) void onSearch` is a callback function called when the user clicks on the search icon.
@@ -51,6 +51,7 @@ The constructor has 7 attributes:
 - `LatLng location` is the point around which you wish to retrieve place information. If this value is provided, `radius` must be provided aswell.
 - `int radius` is the distance (in meters) within which to return place results. Note that setting a radius biases results to the indicated area, but may not fully restrict results to the specified area. If this value is provided, `location` must be provided aswell. See [Location Biasing and Location Restrict](https://developers.google.com/places/web-service/autocomplete#location_biasing) in the Google Maps API documentation.
 - `bool restrictBounds` will return only those places that are strictly within the region defined by `location` and `radius`.
+- `List<String> placeTypes` will allow you to filter Places by its type. For more information on what types are available, check [supported types for Autocompletion](https://developers.google.com/places/web-service/autocomplete?#place_types). On default, no filters are passed to the request, which means all Place types will be shown on autocompletion.
 
 ### The `Place` class
 
@@ -95,6 +96,10 @@ return SearchMapPlaceWidget(
 
 There are a lot of features that can be added to this package. Here are some features I want to implement (or could be implemented by someone else):
 
-- [] Make the widget more personalized
-- [] Make documentation to use the created API and Classes from the package, without having to use the widget itself. 
-- [] Make this package independent of `google_maps_flutter`
+- [ ] Make the widget more personalized
+- [ ] Make documentation to use the created API and Classes from the package, without having to use the widget itself. 
+- [ ] Make this package independent of `google_maps_flutter`
+- [ ] Allow users to close the box clicking outside of it
+- [ ] Proper widget dimensions for phones in portrait orientation.
+
+621.779.747-04
