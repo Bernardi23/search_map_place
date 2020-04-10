@@ -1,8 +1,21 @@
 part of search_map_place;
 
+class SearchMapPlaceController{
+  Function() closeSearch;
+  Function(List<dynamic>) setPredictions;
+  List<dynamic> Function() getPlacePredictions;
+  List<dynamic> get placePredictions => getPlacePredictions();
+
+  bool get ready => closeSearch != null && setPredictions != null && getPlacePredictions != null;
+
+  SearchMapPlaceController();
+}
+
+
 class SearchMapPlaceWidget extends StatefulWidget {
   SearchMapPlaceWidget({
     @required this.apiKey,
+    this.controller,
     this.placeholder = 'Search',
     this.icon = Icons.search,
     this.iconColor = Colors.blue,
@@ -22,6 +35,8 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// API Key of the Google Maps API.
   final String apiKey;
+
+  final SearchMapPlaceController controller;
 
   /// Placeholder text to show when the user has not entered any input.
   final String placeholder;
@@ -85,6 +100,15 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
 
   @override
   void initState() {
+    widget.controller.setPredictions = (predictions){
+      setState(() {
+        _placePredictions = predictions;
+      });
+    };
+    widget.controller.closeSearch = _closeSearch;
+    widget.controller.getPlacePredictions = (){
+      return _placePredictions;
+    };
     _selectedPlace = null;
     _placePredictions = [];
     geocode = Geocoding(apiKey: widget.apiKey, language: widget.language);
