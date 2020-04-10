@@ -338,6 +338,8 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
   /// Will listen for input changes every 0.5 seconds, allowing us to make API requests only when the user stops typing.
   void customListener() {
     Future.delayed(Duration(milliseconds: 500), () {
+      if (!this.mounted)
+        return;
       setState(() => _tempInput = _textEditingController.text);
       customListener();
     });
