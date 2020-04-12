@@ -125,7 +125,7 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
             top: 60,
             left: MediaQuery.of(context).size.width * 0.05,
             child: SearchMapPlaceWidget(
-              apiKey: "AIzaSyCpBpUcrwLCSxnuemXYQEf6qUpMkP9Hhqc",
+              apiKey: apiKEY,
               icon: IconData(0xE8BD, fontFamily: 'feather'),
               clearIcon: IconData(0xE8F6, fontFamily: 'feather'),
               iconColor: Colors.teal[200].withOpacity(0.8),
