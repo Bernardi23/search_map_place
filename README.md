@@ -1,15 +1,15 @@
 # search_map_place
 
-This is a Flutter package that uses the Google Maps API to make a TextField that tries to autocomplete places as the user types, with simple smooth animations, making a nice UI and UX.
+This is a Flutter package that uses the Google Maps API to make a TextField that tries to autocomplete places as the user types, with simple smooth animations, providing a nice UI and UX.
 This will also provide great information about the user selected place, like the coordinates, the bounds to determine the zoom of the GoogleMap widget, and so on.
 
-![GIF Example](https://media.giphy.com/media/521M1DNp9QbTc2yu5y/giphy.gif)
+<img src="./example/search_map_place_example.gif" alt="example" width="300"/>
 
-> The zoom in after selection  was just an example of what can be done with this package. This doesn't mean that the package has this feature included out of the box.
+> This is an example of what can be done using this package. To see the source code, check the examples folder.
 
 ## Getting Started
 
-To install, add this to your `pubspec.yaml` file:
+To install, add it to your `pubspec.yaml` file:
 
 ```
 dependencies:
@@ -51,7 +51,7 @@ The constructor has 7 attributes related to the API:
 - `LatLng location` is the point around which you wish to retrieve place information. If this value is provided, `radius` must be provided aswell.
 - `int radius` is the distance (in meters) within which to return place results. Note that setting a radius biases results to the indicated area, but may not fully restrict results to the specified area. If this value is provided, `location` must be provided aswell. See [Location Biasing and Location Restrict](https://developers.google.com/places/web-service/autocomplete#location_biasing) in the Google Maps API documentation.
 - `bool restrictBounds` will return only those places that are strictly within the region defined by `location` and `radius`.
-- `List<String> placeTypes` will allow you to filter Places by its type. For more information on what types are available, check [supported types for Autocompletion](https://developers.google.com/places/web-service/autocomplete?#place_types). On default, no filters are passed to the request, which means all Place types will be shown on autocompletion.
+- `PlaceType placeType` will allow you to filter Places by its type. For more information on available types, check [supported types for Autocompletion](https://developers.google.com/places/web-service/autocomplete?#place_types). On default, no filters are passed to the request, which means all Place types will be shown on autocompletion.
 
 ### The `Place` class
 
@@ -81,7 +81,6 @@ return SearchMapPlaceWidget(
     location: userPosition.coordinates,
     radius: 30000,
     onSelected: (Place place) async {
-        print(place.description);
         final geolocation = await place.geolocation;
 
         // Will animate the GoogleMap camera, taking us to the selected position with an appropriate zoom
@@ -96,10 +95,7 @@ return SearchMapPlaceWidget(
 
 There are a lot of features that can be added to this package. Here are some features I want to implement (or could be implemented by someone else):
 
-- [ ] Make the widget more personalized
-- [ ] Make documentation to use the created API and Classes from the package, without having to use the widget itself. 
+- [ ] Make the widget more personalizable
 - [ ] Make this package independent of `google_maps_flutter`
 - [ ] Allow users to close the box clicking outside of it
-- [ ] Proper widget dimensions for phones in portrait orientation.
-
-621.779.747-04
+- [ ] Proper widget dimensions for phones in portrait orientation or foldables.

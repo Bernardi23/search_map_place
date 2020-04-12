@@ -19,3 +19,7 @@ API error handling, widget is now a little more customizable (color and icon), a
 ## [0.2.0] - April 9th, 2020
 
 Fixed expanded box being opened after clearing the text field; Fixed Overflow bug; API request is only made when the user stops typing to reduce the number of requests; Added initial DarkMode option
+
+## [0.3.0] - April 11th, 2020
+
+Bug fixes; Improved UX; support for Place Type filtering; Support to the latest google_maps_flutter version;
