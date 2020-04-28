@@ -17,6 +17,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.placeType,
     this.darkMode = false,
     this.key,
+    this.countries,
   })  : assert((location == null && radius == null) || (location != null && radius != null)),
         super(key: key);
 
@@ -71,6 +72,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// Enables Dark Mode when set to `true`. Default value is `false`.
   final bool darkMode;
+
+  /// List of countries to restrict to.
+  final List<String> countries;
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -297,13 +301,20 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
     String url =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
     if (widget.location != null && widget.radius != null) {
-      url += "&location=${widget.location.latitude},${widget.location.longitude}&radius=${widget.radius}";
+      url +=
+          "&location=${widget.location.latitude},${widget.location.longitude}&radius=${widget.radius}";
       if (widget.strictBounds) {
         url += "&strictbounds";
       }
       if (widget.placeType != null) {
         url += "&types=${widget.placeType.apiString}";
       }
+    }
+
+    if (widget.countries != null) {
+      String _components =
+          widget.countries.map((String _country) => 'country:' + _country).join('|');
+      url += "&components=" + _components;
     }
 
     final response = await http.get(url);
