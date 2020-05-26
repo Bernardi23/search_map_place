@@ -10,6 +10,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.iconColor = Colors.blue,
     this.onSelected,
     this.onSearch,
+    this.trailing,
+    this.leading,
+    this.cornerRadius,
     this.language = 'en',
     this.location,
     this.radius,
@@ -71,6 +74,15 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// Enables Dark Mode when set to `true`. Default value is `false`.
   final bool darkMode;
+
+  /// The Widget that will be displayed after the search bar.
+  final Widget trailing;
+
+  /// The Widget that will be before the search bar.
+  final Widget leading;
+
+  /// The radius of the the search bar's rounded corners
+  final double cornerRadius;
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -175,6 +187,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
     return Center(
       child: Row(
         children: <Widget>[
+          widget.leading??Container(),
           Expanded(
             child: TextField(
               decoration: _inputStyle(),
@@ -203,7 +216,8 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
                 secondChild: Icon(Icons.clear, color: widget.iconColor),
               ),
             ),
-          if (!widget.hasClearButton) Icon(widget.icon, color: widget.iconColor)
+          if (!widget.hasClearButton) Icon(widget.icon, color: widget.iconColor),
+          widget.trailing??Container(),
         ],
       ),
     );
@@ -247,11 +261,11 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
   }
 
   BoxDecoration _containerDecoration() {
-    return BoxDecoration(
-      color: widget.darkMode ? Colors.grey[800] : Colors.white,
-      borderRadius: BorderRadius.all(Radius.circular(6.0)),
-      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
-    );
+     return BoxDecoration(
+        color: widget.darkMode ? Colors.grey[800] : Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(widget.cornerRadius ?? 6.0)),
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
+      );
   }
 
   /*
