@@ -121,9 +121,9 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
     if (widget.hasClearButton) {
       _fn.addListener(() async {
         if (_fn.hasFocus)
-          setState(() => _crossFadeState = CrossFadeState.showSecond);
+          if (mounted) setState(() => _crossFadeState = CrossFadeState.showSecond);
         else
-          setState(() => _crossFadeState = CrossFadeState.showFirst);
+          if (mounted) setState(() => _crossFadeState = CrossFadeState.showFirst);
       });
       _crossFadeState = CrossFadeState.showFirst;
     }
@@ -262,10 +262,12 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
   /// Api and giving the user Place options
   void _autocompletePlace() async {
     if (_fn.hasFocus) {
-      setState(() {
-        _currentInput = _textEditingController.text;
-        _isEditing = true;
-      });
+      if (mounted) {
+        setState(() {
+          _currentInput = _textEditingController.text;
+          _isEditing = true;
+        });
+      }
 
       _textEditingController.removeListener(_autocompletePlace);
 
@@ -278,7 +280,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
       if (_currentInput == _tempInput) {
         final predictions = await _makeRequest(_currentInput);
         await _animationController.animateTo(0.5);
-        setState(() => _placePredictions = predictions);
+        if (mounted) setState(() => _placePredictions = predictions);
         await _animationController.forward();
 
         _textEditingController.addListener(_autocompletePlace);
@@ -344,10 +346,12 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
   void _closeSearch() async {
     if (!_animationController.isDismissed) await _animationController.animateTo(0.5);
     _fn.unfocus();
-    setState(() {
-      _placePredictions = [];
-      _isEditing = false;
-    });
+    if (mounted) {
+      setState(() {
+        _placePredictions = [];
+        _isEditing = false;
+      });
+    }
     _animationController.reverse();
     _textEditingController.addListener(_autocompletePlace);
   }
