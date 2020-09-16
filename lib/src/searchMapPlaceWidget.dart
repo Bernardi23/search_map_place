@@ -152,7 +152,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
 
   @override
   Widget build(BuildContext context) => Container(
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: MediaQuery.of(context).size.width,
         child: _searchContainer(
           child: _searchInput(context),
         ),
