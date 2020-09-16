@@ -20,6 +20,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.border,
     this.leftPadding,
     this.rightPadding,
+    this.borderColor = Colors.black,
     this.key,
   })  : assert((location == null && radius == null) ||
             (location != null && radius != null)),
@@ -38,6 +39,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   ///to add border to the container
   final double border;
+
+  ///to add border color
+  final Color borderColor;
 
   /// API Key of the Google Maps API.
   final String apiKey;
@@ -274,10 +278,21 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   BoxDecoration _containerDecoration() {
     return BoxDecoration(
       color: widget.darkMode ? Colors.grey[800] : Colors.white,
-      border: widget.border != null ? Border.all(width: widget.border) : null,
+      border: widget.border != null
+          ? Border.all(
+              width: widget.border,
+              color: widget.borderColor,
+            )
+          : null,
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
       boxShadow: widget.shadowRequired
-          ? [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)]
+          ? [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 20,
+                spreadRadius: 10,
+              )
+            ]
           : null,
     );
   }
