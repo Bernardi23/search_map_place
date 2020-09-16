@@ -18,6 +18,8 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.placeType,
     this.darkMode = false,
     this.border,
+    this.horizontalPadding = 8,
+    this.verticalPadding = 8,
     this.key,
   })  : assert((location == null && radius == null) ||
             (location != null && radius != null)),
@@ -27,6 +29,12 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   ///To return shadow or not
   final bool shadowRequired;
+
+  ///to adding horizontal padding
+  final double horizontalPadding;
+
+  ///to adding vertical padding
+  final double verticalPadding;
 
   ///to add border to the container
   final double border;
@@ -163,7 +171,10 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: widget.horizontalPadding,
+                    vertical: widget.verticalPadding,
+                  ),
                   child: child,
                 ),
                 if (_placePredictions.length > 0)
