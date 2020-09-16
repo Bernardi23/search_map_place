@@ -17,6 +17,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.strictBounds = false,
     this.placeType,
     this.darkMode = false,
+    this.border,
     this.key,
   })  : assert((location == null && radius == null) ||
             (location != null && radius != null)),
@@ -26,6 +27,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   ///To return shadow or not
   final bool shadowRequired;
+
+  ///to add border to the container
+  final double border;
 
   /// API Key of the Google Maps API.
   final String apiKey;
@@ -159,8 +163,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 12.0, right: 12.0, top: 4),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4),
                   child: child,
                 ),
                 if (_placePredictions.length > 0)
@@ -260,7 +263,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   BoxDecoration _containerDecoration() {
     return BoxDecoration(
       color: widget.darkMode ? Colors.grey[800] : Colors.white,
-      border: Border.all(),
+      border: widget.border != null ? Border.all(width: widget.border) : null,
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
       boxShadow: widget.shadowRequired
           ? [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)]
