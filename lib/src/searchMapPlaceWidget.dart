@@ -21,6 +21,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.leftPadding,
     this.rightPadding,
     this.borderColor = Colors.black,
+    this.hintColor = Colors.black,
     this.key,
   })  : assert((location == null && radius == null) ||
             (location != null && radius != null)),
@@ -42,6 +43,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   ///to add border color
   final Color borderColor;
+
+  ///to add border color
+  final Color hintColor;
 
   /// API Key of the Google Maps API.
   final String apiKey;
@@ -267,6 +271,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   InputDecoration _inputStyle() {
     return InputDecoration(
       hintText: this.widget.placeholder,
+      hoverColor: widget.hintColor,
       border: InputBorder.none,
       contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       hintStyle: TextStyle(
