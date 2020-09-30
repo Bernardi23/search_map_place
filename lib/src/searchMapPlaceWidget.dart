@@ -17,6 +17,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.placeType,
     this.darkMode = false,
     this.hasShadow = true,
+    this.fontSize,
     this.key,
   })  : assert((location == null && radius == null) || (location != null && radius != null)),
         super(key: key);
@@ -73,9 +74,11 @@ class SearchMapPlaceWidget extends StatefulWidget {
   /// Enables Dark Mode when set to `true`. Default value is `false`.
   final bool darkMode;
 
-
   // Enables a shadow when set to `true`. Default value is `true`.
   final bool hasShadow;
+
+  // The font size of the text inputted in the search bar and placeholder
+  final double fontSize;
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -177,6 +180,8 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
   }
 
   Widget _searchInput(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Center(
       child: Row(
         children: <Widget>[
@@ -189,7 +194,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
               autofocus: false,
               focusNode: _fn,
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.04,
+                fontSize: widget.fontSize ?? screenWidth * 0.04,
                 color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
               ),
             ),
@@ -216,6 +221,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
 
   Widget _placeOption(Place prediction) {
     String place = prediction.description;
+    final double screenWidth = MediaQuery.of(context).size.width;
 
     return MaterialButton(
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
@@ -224,7 +230,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
         title: Text(
           place.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
           style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width * 0.04,
+            fontSize: widget.fontSize ?? screenWidth * 0.04,
             color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
           ),
           maxLines: 1,
