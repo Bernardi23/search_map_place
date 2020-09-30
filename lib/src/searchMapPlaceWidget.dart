@@ -5,9 +5,11 @@ class SearchMapPlaceWidget extends StatefulWidget {
     @required this.apiKey,
     this.placeholder = 'Search',
     this.icon = Icons.search,
+    this.leadingIcon,
     this.hasClearButton = true,
     this.clearIcon = Icons.clear,
     this.iconColor = Colors.blue,
+    this.iconSize = 24.0,
     this.onSelected,
     this.onSearch,
     this.language = 'en',
@@ -62,6 +64,9 @@ class SearchMapPlaceWidget extends StatefulWidget {
   /// The initial icon to show in the search box
   final IconData icon;
 
+  /// If this value is defined, the icon to show at the start of the search bar
+  final IconData leadingIcon;
+
   /// Makes available "clear textfield" button when the user is writing.
   final bool hasClearButton;
 
@@ -71,13 +76,16 @@ class SearchMapPlaceWidget extends StatefulWidget {
   /// The color of the icon to show in the search box
   final Color iconColor;
 
+  /// The size of the the initial icon, the leading icon, and the clear icon
+  final double iconSize;
+
   /// Enables Dark Mode when set to `true`. Default value is `false`.
   final bool darkMode;
 
-  // Enables a shadow when set to `true`. Default value is `true`.
+  /// Enables a shadow when set to `true`. Default value is `true`.
   final bool hasShadow;
 
-  // The font size of the text inputted in the search bar and placeholder
+  /// The font size of the text inputted in the search bar and placeholder
   final double fontSize;
 
   @override
@@ -185,6 +193,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
     return Center(
       child: Row(
         children: <Widget>[
+          widget.leadingIcon ?? Container(),
           Expanded(
             child: TextField(
               decoration: _inputStyle(),
@@ -205,15 +214,14 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
               onTap: () {
                 if (_crossFadeState == CrossFadeState.showSecond) _textEditingController.clear();
               },
-              // child: Icon(_inputIcon, color: this.widget.iconColor),
               child: AnimatedCrossFade(
                 crossFadeState: _crossFadeState,
                 duration: Duration(milliseconds: 300),
-                firstChild: Icon(widget.icon, color: widget.iconColor),
-                secondChild: Icon(Icons.clear, color: widget.iconColor),
+                firstChild: Icon(widget.icon, color: widget.iconColor, size: widget.iconSize),
+                secondChild: Icon(Icons.clear, color: widget.iconColor, size: widget.iconSize),
               ),
             ),
-          if (!widget.hasClearButton) Icon(widget.icon, color: widget.iconColor)
+          if (!widget.hasClearButton) Icon(widget.icon, color: widget.iconColor, size: widget.iconSize)
         ],
       ),
     );
