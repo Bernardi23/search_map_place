@@ -16,6 +16,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.strictBounds = false,
     this.placeType,
     this.darkMode = false,
+    this.hasShadow = true,
     this.key,
   })  : assert((location == null && radius == null) || (location != null && radius != null)),
         super(key: key);
@@ -71,6 +72,10 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// Enables Dark Mode when set to `true`. Default value is `false`.
   final bool darkMode;
+
+
+  // Enables a shadow when set to `true`. Default value is `true`.
+  final bool hasShadow;
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -250,7 +255,11 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
     return BoxDecoration(
       color: widget.darkMode ? Colors.grey[800] : Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
-      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
+      boxShadow: [
+        widget.hasShadow
+          ? BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)
+          : BoxShadow()
+      ],
     );
   }
 
