@@ -195,6 +195,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
         children: <Widget>[
           if (widget.leadingIcon != null)
             Icon(widget.leadingIcon, color: widget.iconColor, size: widget.iconSize),
+          widget.leadingIcon != null ? Container(width: 15) : Container(),
           Expanded(
             child: TextField(
               decoration: _inputStyle(),
