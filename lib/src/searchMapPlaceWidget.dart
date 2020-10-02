@@ -20,6 +20,7 @@ class SearchMapPlaceWidget extends StatefulWidget {
     this.darkMode = false,
     this.hasShadow = true,
     this.fontSize,
+    this.onClear,
     this.key,
   })  : assert((location == null && radius == null) || (location != null && radius != null)),
         super(key: key);
@@ -87,6 +88,10 @@ class SearchMapPlaceWidget extends StatefulWidget {
 
   /// The font size of the text inputted in the search bar and placeholder
   final double fontSize;
+
+  /// If defined, this function will be invoked upon pressing the clear button,
+  /// if `hasClearButton` has been set to `true`.
+  final Function onClear;
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
@@ -214,7 +219,12 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Ticker
           if (widget.hasClearButton)
             GestureDetector(
               onTap: () {
-                if (_crossFadeState == CrossFadeState.showSecond) _textEditingController.clear();
+                if (_crossFadeState == CrossFadeState.showSecond) {
+                  _textEditingController.clear();
+                }
+                if (widget.onClear != null) {
+                  widget.onClear();
+                }
               },
               child: AnimatedCrossFade(
                 crossFadeState: _crossFadeState,
