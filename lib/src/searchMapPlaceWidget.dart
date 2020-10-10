@@ -271,7 +271,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   InputDecoration _inputStyle() {
     return InputDecoration(
       hintText: this.widget.placeholder,
-      border: InputBorder.none,
+      // border: InputBorder.none,
       contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       hintStyle: TextStyle(
         color: widget.darkMode ? Colors.grey[100] : widget.hintColor,
@@ -281,7 +281,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
 
   BoxDecoration _containerDecoration() {
     return BoxDecoration(
-      color: widget.darkMode ? Colors.grey[800] : Colors.white,
+      color: widget.darkMode ? Colors.grey[800] : Color(0xffE5E5E5),
       border: widget.border != null
           ? Border.all(
               width: widget.border,
