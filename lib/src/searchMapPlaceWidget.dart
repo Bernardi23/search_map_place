@@ -161,7 +161,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   @override
   Widget build(BuildContext context) => Container(
         width: MediaQuery.of(context).size.width,
-        color: C,
+        color: Colors.white,
         child: _searchContainer(
           child: _searchInput(context),
         ),
@@ -218,7 +218,8 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
                   focusNode: _fn,
                   style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width * 0.04,
-                    color: widget.darkMode ? Colors.white : Colors.white,
+                    color:
+                        widget.darkMode ? Colors.grey[300] : Colors.grey[300],
                   ),
                 ),
               ),
