@@ -161,6 +161,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   @override
   Widget build(BuildContext context) => Container(
         width: MediaQuery.of(context).size.width,
+        color: C,
         child: _searchContainer(
           child: _searchInput(context),
         ),
@@ -203,38 +204,43 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
 
   Widget _searchInput(BuildContext context) {
     return Center(
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              decoration: _inputStyle(),
-              controller: _textEditingController,
-              onSubmitted: (_) => _selectPlace(),
-              onEditingComplete: _selectPlace,
-              autofocus: false,
-              focusNode: _fn,
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.04,
-                color: widget.darkMode ? Colors.grey[100] : Colors.grey[850],
+      child: Column(
+        children: [
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  decoration: _inputStyle(),
+                  controller: _textEditingController,
+                  onSubmitted: (_) => _selectPlace(),
+                  onEditingComplete: _selectPlace,
+                  autofocus: false,
+                  focusNode: _fn,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
+                    color: widget.darkMode ? Colors.white : Colors.white,
+                  ),
+                ),
               ),
-            ),
+              Container(width: 15),
+              if (widget.hasClearButton)
+                GestureDetector(
+                  onTap: () {
+                    if (_crossFadeState == CrossFadeState.showSecond)
+                      _textEditingController.clear();
+                  },
+                  // child: Icon(_inputIcon, color: this.widget.iconColor),
+                  child: AnimatedCrossFade(
+                    crossFadeState: _crossFadeState,
+                    duration: Duration(milliseconds: 300),
+                    firstChild: Icon(widget.icon, color: widget.iconColor),
+                    secondChild: Icon(Icons.clear, color: widget.iconColor),
+                  ),
+                ),
+              if (!widget.hasClearButton)
+                Icon(widget.icon, color: widget.iconColor)
+            ],
           ),
-          Container(width: 15),
-          if (widget.hasClearButton)
-            GestureDetector(
-              onTap: () {
-                if (_crossFadeState == CrossFadeState.showSecond)
-                  _textEditingController.clear();
-              },
-              // child: Icon(_inputIcon, color: this.widget.iconColor),
-              child: AnimatedCrossFade(
-                crossFadeState: _crossFadeState,
-                duration: Duration(milliseconds: 300),
-                firstChild: Icon(widget.icon, color: widget.iconColor),
-                secondChild: Icon(Icons.clear, color: widget.iconColor),
-              ),
-            ),
-          if (!widget.hasClearButton) Icon(widget.icon, color: widget.iconColor)
         ],
       ),
     );
