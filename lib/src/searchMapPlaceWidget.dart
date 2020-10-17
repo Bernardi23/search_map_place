@@ -218,8 +218,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
                   focusNode: _fn,
                   style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width * 0.04,
-                    color:
-                        widget.darkMode ? Colors.grey[300] : Colors.grey[300],
+                    color: widget.darkMode ? Colors.black : Colors.black,
                   ),
                 ),
               ),
@@ -281,7 +280,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
       // border: InputBorder.none,
       contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       hintStyle: TextStyle(
-        color: widget.darkMode ? Colors.grey[100] : widget.hintColor,
+        color: widget.darkMode ? Colors.black : Colors.black,
       ),
     );
   }
