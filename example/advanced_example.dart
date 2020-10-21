@@ -136,7 +136,7 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
                 final geolocation = await place.geolocation;
 
                 // Using the `flutter_polyline_points` library to get the needed data to create the path.
-                PolylinePoints polylineGetter = PolylinePoints();
+                PolylinePoints polylineGetter = Polylin.ePoints();
                 List<PointLatLng> result = await polylineGetter.getRouteBetweenCoordinates(
                   apiKEY,
                   _initialCamera.target.latitude,
