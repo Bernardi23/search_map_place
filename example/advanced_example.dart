@@ -76,7 +76,7 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
           // Map widget
@@ -127,9 +127,9 @@ class MapSampleState extends State<MapPage> with SingleTickerProviderStateMixin 
             child: SearchMapPlaceWidget(
               apiKey: apiKEY,
               icon: IconData(0xE8BD, fontFamily: 'feather'),
-              clearIcon: IconData(0xE8F6, fontFamily: 'feather'),
+              // clearIcon: IconData(0xE8F6, fontFamily: 'feather'),
               iconColor: Colors.teal[200].withOpacity(0.8),
-              placeType: PlaceType.establishment,
+              // placeType: PlaceType.establishment,
               location: _initialCamera.target,
               radius: 30000,
               onSelected: (place) async {
