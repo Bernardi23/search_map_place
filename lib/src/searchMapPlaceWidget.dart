@@ -17,14 +17,14 @@ class SearchMapPlaceWidget extends StatefulWidget {
       this.placeType,
       this.darkMode = false,
       this.key,
-      this._textEditingController})
+      this.textEditingController})
       : assert((location == null && radius == null) ||
             (location != null && radius != null)),
         super(key: key);
 
   final Key key;
 
-  final TextEditingController _textEditingController;
+  final TextEditingController textEditingController;
 
   /// API Key of the Google Maps API.
   final String apiKey;
