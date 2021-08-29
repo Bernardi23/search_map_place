@@ -5,13 +5,13 @@ author: Lucas Bernardi <lucasbernardi.23@gmail.com>
 homepage: https://github.com/Bernardi23/search_map_place
 
 environment:
-  sdk: ">=2.5.2 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  google_maps_flutter: ^0.5.13
-  http: ^0.12.0+4
+  google_maps_flutter: ^2.0.6
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
